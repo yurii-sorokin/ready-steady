@@ -1,2 +1,2 @@
-# ready-steady-api
+# ready-steady
 Ready Steady Relase
