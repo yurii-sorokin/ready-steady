@@ -1,0 +1,34 @@
+{
+  "name": "ready-steady",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "git@github.com:yurii-sorokin/ready-steady.git",
+  "author": "Yurii Sorokin <fortyin@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start:dev": "lerna run start:dev --parallel",
+    "lint": "lerna run lint --parallel"
+  },
+  "dependencies": {
+    "@commitlint/cli": "8.3.5",
+    "@commitlint/config-conventional": "8.3.4",
+    "@commitlint/config-lerna-scopes": "8.3.4",
+    "@typescript-eslint/eslint-plugin": "2.17.0",
+    "@typescript-eslint/parser": "2.17.0",
+    "eslint": "6.8.0",
+    "eslint-config-standard": "14.1.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-node": "11.0.0",
+    "eslint-plugin-prettier": "3.1.2",
+    "eslint-plugin-promise": "4.2.1",
+    "husky": "4.2.1",
+    "lerna": "3.20.2",
+    "prettier": "1.19.1",
+    "typescript": "3.7.5"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "6.10.0",
+    "firebase-tools": "7.13.1"
+  }
+}

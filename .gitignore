@@ -1,0 +1,23 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# env
+.env
+
+# firebase
+.firebase
+firebase-debug.log
+
+# package manager
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.yarnrc
+
+# misc
+.vscode
