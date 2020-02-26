@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "build": {
+    "env": {
+      "REACT_APP_HOST": "zeit"
+    }
+  },
+  "env": {
+    "REACT_APP_HOST": "zeit",
+    "TMDB_KEY": "@tmdb_key"
+  },
+  "builds": [
+    {
+      "src": "packages/functions/src/index.ts",
+      "use": "@now/node",
+      "config": { "maxLambdaSize": "50mb", "distDir": "build" }
+    },
+    {
+      "src": "packages/ui/package.json",
+      "use": "@now/static-build",
+      "config": { "distDir": "build" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/packages/functions/src/index.ts"
+    },
+    {
+      "src": "/static/(.*)",
+      "headers": { "cache-control": "s-maxage=31536000,immutable" },
+      "dest": "/packages/ui/static/$1"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/packages/ui/robots.txt"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/packages/ui/favicon.ico"
+    },
+    {
+      "src": "/(.*).png",
+      "dest": "/packages/ui/$1.png"
+    },
+    {
+      "src": "/(.*).json",
+      "dest": "/packages/ui/$1.json"
+    },
+    {
+      "src": "/(.*).js",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "/packages/ui/$1.js"
+    },
+    {
+      "src": "/(.*)",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "/packages/ui/index.html"
+    }
+  ]
+}

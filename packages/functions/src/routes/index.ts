@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import tauist from 'tauist';
-import { moviesRouter, tvsRouter } from './tmdb';
-import { gamesRouter } from './rawg';
+import { moviesRouter } from './movies';
+import { tvsRouter } from './tvs';
+import { gamesRouter } from './games';
 
 export const baseRouter = Router();
 

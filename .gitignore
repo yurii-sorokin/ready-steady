@@ -13,6 +13,9 @@ coverage
 .firebase
 firebase-debug.log
 
+# now
+.now
+
 # package manager
 npm-debug.log*
 yarn-debug.log*

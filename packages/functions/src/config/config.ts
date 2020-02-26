@@ -1,12 +1,8 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import * as functions from 'firebase-functions';
+import { config as zeitConfig } from './config.zeit';
+import { config as firebaseConfig } from './config.firebase';
 
-export interface Config {
-  api: {
-    tmdb_key: string;
-  };
-}
-
-export const config = (): Config => {
-  return functions.config() as Config;
+export const config = () => {
+  return process.env.REACT_APP_HOST === 'zeit'
+    ? zeitConfig()
+    : firebaseConfig();
 };

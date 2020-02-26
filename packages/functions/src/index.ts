@@ -1,8 +1,6 @@
-import * as functions from 'firebase-functions';
-import { app } from './app';
+import { getServer } from './server';
 
-const getServer = () => {
-  return functions.https.onRequest(app);
-};
+const server = getServer();
 
-export const api = getServer();
+export const api = server;
+export default server;

@@ -7,10 +7,16 @@
   "license": "MIT",
   "private": true,
   "main": "build/index.js",
+  "files": [
+    "build"
+  ],
   "scripts": {
+    "prebuild": "rimraf build",
     "build": "tsc --outDir build",
-    "start": "yarn build && firebase functions:shell",
-    "start:dev": "concurrently \"yarn build --watch\" \"firebase serve --only functions\"",
+    "start:firebase": "yarn build && firebase functions:shell",
+    "start:zeit": "REACT_APP_HOST=zeit yarn build && node build/index.js",
+    "start:dev:firebase": "concurrently \"yarn build --watch\" \"firebase serve --only functions\"",
+    "start:dev:zeit": "PORT=5000 REACT_APP_HOST=zeit tsnd --respawn --notify=false src/index.ts",
     "lint-staged": "lint-staged",
     "lint": "eslint \"src/**/*.{ts,tsx}\""
   },
@@ -45,6 +51,9 @@
     "firebase-functions-test": "0.1.6",
     "firebase-tools": "7.13.1",
     "lint-staged": "10.0.7",
+    "now": "17.0.4",
+    "rimraf": "3.0.2",
+    "ts-node-dev": "1.0.0-pre.44",
     "typescript": "3.7.5"
   }
 }
