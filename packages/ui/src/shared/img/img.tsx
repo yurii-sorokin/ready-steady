@@ -5,13 +5,12 @@ import { system, SystemProps, theme } from '../../design-system';
 const defaultSrc =
   'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
-export const ImgUnstyled: FC<{ src?: string; fallbackSrc?: string }> = ({
-  src,
-  fallbackSrc,
-  ...props
-}) => {
+export const ImgUnstyled: FC<{
+  src?: string | null;
+  fallbackSrc?: string | null;
+}> = ({ src, fallbackSrc, ...props }) => {
   const [safeSrc, setSafeSrc] = useState<string | undefined>(
-    src || fallbackSrc || defaultSrc
+    src || fallbackSrc || defaultSrc || undefined
   );
   const onError = useCallback(() => setSafeSrc(fallbackSrc || defaultSrc), [
     fallbackSrc

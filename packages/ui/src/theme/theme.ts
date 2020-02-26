@@ -8,7 +8,14 @@ export const colors = {
   grey2: '#bbb9b9',
 
   white: '#f9f3ef',
-  white2: '#f2e5dc'
+  white2: '#f2e5dc',
+  white3: '#f4f4f4',
+
+  gold: '#ffdd00',
+  silver: '#eaeaea',
+  bronze: '#ba7625',
+
+  blue: '#d9f5ff'
 };
 
 export const darkTheme = {
@@ -68,6 +75,33 @@ export const lightTheme: Theme = {
     },
     card: {
       normal: colors.white,
+      inverted: colors.dark
+    },
+    text: {
+      primary: colors.dark,
+      secondary: colors.white,
+      inverted: colors.white,
+      disabled: colors.grey2
+    }
+  }
+};
+
+export const dtfTheme: Theme = {
+  ...lightTheme,
+
+  colors: {
+    primary: {
+      normal: colors.blue,
+      minor: colors.white
+    },
+    secondary: {
+      normal: colors.orange
+    },
+    border: {
+      normal: colors.grey
+    },
+    card: {
+      normal: colors.white3,
       inverted: colors.dark
     },
     text: {

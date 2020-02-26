@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { box, theme } from '../../design-system';
 import rgba from 'polished/lib/color/rgba';
 
-export const Bg = styled.div<{ src?: string }>`
+export const Bg = styled.div<{ src?: string | null }>`
   ${box};
   position: fixed;
   top: 0px;

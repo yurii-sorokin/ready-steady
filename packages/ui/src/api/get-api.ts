@@ -1,10 +1,12 @@
-import { functions } from '../firebase';
+import { getApi as getApiFirebase } from './get-api.firebase';
+import { getApi as getApiZeit } from './get-api.zeit';
 
 export interface ApiResponse<T extends any> {
   readonly data: T;
 }
 
 export const getApi = () => {
-  return <T extends any>(path: string, data?: any): Promise<ApiResponse<T>> =>
-    functions.httpsCallable(path)(data);
+  return process.env.REACT_APP_HOST === 'zeit'
+    ? getApiZeit()
+    : getApiFirebase();
 };

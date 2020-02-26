@@ -11,6 +11,10 @@ export const appMessages = defineMessages({
   },
   tvs: {
     id: 'app.tvs',
-    defaultMessage: 'Tvs'
+    defaultMessage: 'Tv Shows'
+  },
+  poweredBy: {
+    id: 'app.powered-by',
+    defaultMessage: 'Powered by <link1>RAWG</link1> and <link2>TMDB</link2>'
   }
 });

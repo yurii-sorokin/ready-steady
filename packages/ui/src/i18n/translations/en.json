@@ -1,6 +1,6 @@
 {
-  "app.all-rights-reserved": "All rights reserved",
   "app.games": "Games",
   "app.movies": "Movies",
-  "app.tvs": "Tvs"
+  "app.powered-by": "Powered by <link1>RAWG</link1> and <link2>TMDB</link2>",
+  "app.tvs": "Tv Shows"
 }

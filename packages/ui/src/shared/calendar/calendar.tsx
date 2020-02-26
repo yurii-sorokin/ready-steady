@@ -20,7 +20,7 @@ interface CalendarProps<T extends { id: string | number }> {
   date: Date;
   dataGroupedByDay: { [key: string]: T[] };
   maxColumnCount: number;
-  bgUrl?: string;
+  bgUrl?: string | null;
   render: (item: T) => ReactElement;
 }
 
@@ -73,7 +73,7 @@ export const Calendar = <T extends { id: string | number }>({
 
                   return (
                     <Td key={+day} empty={!dayItems}>
-                      <DayIndicator today={today}>
+                      <DayIndicator today={today} sameMonth={sameMonth}>
                         {dayNumber}
                         <DayWeek>&nbsp;/&nbsp;{weekDayNames[i]}</DayWeek>
                       </DayIndicator>

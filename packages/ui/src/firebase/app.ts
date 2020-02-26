@@ -16,16 +16,24 @@ const firebaseConfig = {
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-export const messaging = firebase.messaging();
-export const analytics = firebase.analytics();
-export const functions = firebase.functions();
+let messaging;
+const analytics = firebase.analytics();
+const functions = firebase.functions();
+
+try {
+  messaging = firebase.messaging();
+
+  messaging.usePublicVapidKey(
+    'BOBqSxO1Ko8DHJ2iu92ZuYN9c2ZC1oO-yBI_P9nYO4e-vrXLL6RY2KATYnUT04uPHC_zdbxwl8G6AyHudT-G2Is'
+  );
+} catch (error) {
+  console.error(error);
+}
+
+export { messaging, analytics, functions };
 
 if (process.env.NODE_ENV === 'development') {
   functions.useFunctionsEmulator('http://localhost:3000');
 }
 
 analytics.setAnalyticsCollectionEnabled(process.env.NODE_ENV === 'production');
-
-messaging.usePublicVapidKey(
-  'BOBqSxO1Ko8DHJ2iu92ZuYN9c2ZC1oO-yBI_P9nYO4e-vrXLL6RY2KATYnUT04uPHC_zdbxwl8G6AyHudT-G2Is'
-);

@@ -9,4 +9,10 @@ export const Globals = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     background-color: ${theme(t => t.colors.primary.minor)};
   }
+
+  a {
+    display: inline-block;
+    color: ${theme(t => t.colors.secondary.normal)};
+    text-decoration: none;
+  }
 `;

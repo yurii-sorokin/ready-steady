@@ -22,6 +22,16 @@ export const ifProp = <
   right?: RRight
 ) => (p: P) => (p[propName] ? left : right);
 
+export const ifNotProp = <
+  P extends ThemeProps<Theme>,
+  RLeft extends unknown,
+  RRight extends unknown
+>(
+  propName: keyof P,
+  left: RLeft,
+  right?: RRight
+) => (p: P) => (!p[propName] ? left : right);
+
 export const theme = <P extends ThemeProps<Theme>>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fn: (theme: Theme) => any

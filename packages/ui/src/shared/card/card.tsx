@@ -24,9 +24,7 @@ export const CardTitle = styled.div`
   line-height: 1em;
 `;
 
-export const CardPoster = styled(Img)<{
-  src: string;
-}>`
+export const CardPoster = styled(Img)`
   ${box}
   width: 100%;
   height: 150px;

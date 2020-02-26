@@ -9,8 +9,10 @@ import { Title } from './title';
 
 export const CardDetails = styled.div`
   ${box}
+  position: relative;
   display: flex;
   flex-direction: column;
+  height: 100%;
   max-height: 100%;
   overflow-y: auto;
   border: 1px solid;
@@ -21,12 +23,16 @@ export const CardDetails = styled.div`
   border-top-right-radius: ${theme(t => t.radii.normal)};
 
   ${up(Size.md)} {
+    height: auto;
     display: block;
+    min-height: 400px;
     border-radius: ${theme(t => t.radii.small)};
   }
 
   ${down(Size.md, 'landscape')} {
+    height: auto;
     display: block;
+    min-height: 300px;
     border-radius: ${theme(t => t.radii.small)};
   }
 `;
@@ -36,7 +42,7 @@ export const CardDetailsPoster = styled.div`
   width: 100%;
 
   ${Img} {
-    max-height: 250px;
+    max-height: 225px;
     width: 100%;
 
     ${down(Size.md, 'landscape')} {

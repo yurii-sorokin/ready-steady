@@ -1,6 +1,6 @@
 {
-  "app.all-rights-reserved": "Все права сохранены",
   "app.games": "Игры",
   "app.movies": "Фильмы",
+  "app.powered-by": "На базе <link1>RAWG</link1> и <link2>TMDB</link2>",
   "app.tvs": "Сериалы"
 }

@@ -6,5 +6,5 @@ export interface ApiResponse<T extends any> {
 
 export const getApi = () => {
   return <T extends any>(path: string, data?: any): Promise<ApiResponse<T>> =>
-    ky.post(path, { json: data }).json();
+    ky.post(path, { json: { data } }).json();
 };

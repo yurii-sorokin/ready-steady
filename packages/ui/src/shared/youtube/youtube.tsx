@@ -23,12 +23,15 @@ export const YouTubeFrame = styled.iframe.attrs({
   height: 100%;
 `;
 
-export const YouTube: FC<{ src: string; width?: string; height?: string }> = ({
-  src,
+const videoUrl = (id: string) =>
+  `https://www.youtube.com/embed/${id}?autoplay=0&mute=1`;
+
+export const YouTube: FC<{ id: string; width?: string; height?: string }> = ({
+  id,
   width,
   height
 }) => (
   <YouTubeWrapper>
-    <YouTubeFrame {...{ src, width, height }} />
+    <YouTubeFrame {...{ src: videoUrl(id), width, height }} />
   </YouTubeWrapper>
 );
