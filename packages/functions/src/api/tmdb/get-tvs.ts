@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { createPeriod } from '../../utils/date';
 import { tmdbApi } from './api';
-import { paginate, prefixPoster } from './utils';
+import { paginate, prefixPoster, resolveRegion } from './utils';
 import { TvShow, SearchResult } from './types';
 
 export interface GetTvsOptions {
@@ -15,7 +15,7 @@ export type TvsResponse = SearchResult<TvShow>;
 export const getTvs = async ({
   date,
   language = '',
-  region = language
+  region = resolveRegion(language)
 }: GetTvsOptions) => {
   const { from, to } = createPeriod(date);
 

@@ -12,7 +12,7 @@ export type MovieDetailsResponse = AppendVideos<MovieDetails>;
 
 export const getMovieDetails = async ({
   id,
-  language
+  language = ''
 }: GetMovieDetailsOptions) => {
   const searchParams = {
     language,
