@@ -12,7 +12,7 @@ export const getGameDetails = ({
   locale
 }: GetGameDetailsOptions): Promise<GameDetails> => {
   const api = getApi();
-  return api(`api/games/${id}`, {
+  return api(`/api/games/${id}`, {
     language: locale
   }).then(({ data }) => data);
 };

@@ -10,9 +10,8 @@ export interface GetTvsOptions {
 
 export const getTvs = ({ date, locale }: GetTvsOptions): Promise<TvShow[]> => {
   const api = getApi();
-  return api<TvShow[]>('api/tvs', {
+  return api<TvShow[]>('/api/tvs', {
     date: format(date, 'yyyy-MM'),
-    region: locale,
     language: locale
   }).then(({ data }) => data);
 };

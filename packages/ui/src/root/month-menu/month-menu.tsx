@@ -5,12 +5,13 @@ import useKey from '@rooks/use-key';
 import React, { FC } from 'react';
 import { useFormatDate } from '../../i18n';
 import { MonthDate, MonthDateShort, MonthNav, MonthNavButton } from './nav';
+import { useMonthNav } from '../../hooks/use-month-nav';
+import { useDateParam } from '../../hooks/use-date-param';
 
-export const MonthMenu: FC<{
-  date: Date;
-  onPrevMonth: () => void;
-  onNextMonth: () => void;
-}> = ({ date, onPrevMonth, onNextMonth }) => {
+export const MonthMenu: FC = () => {
+  const [date] = useDateParam();
+  const [onPrevMonth, onNextMonth] = useMonthNav(date);
+
   const formatDate = useFormatDate();
 
   useKey(['ArrowLeft'], onPrevMonth);

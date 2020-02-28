@@ -12,7 +12,7 @@ export const getMovieDetails = ({
   locale
 }: GetMovieDetailsOptions): Promise<AppendVideos<MovieDetails>> => {
   const api = getApi();
-  return api(`api/movies/${id}`, {
+  return api(`/api/movies/${id}`, {
     language: locale
   }).then(({ data }) => data);
 };

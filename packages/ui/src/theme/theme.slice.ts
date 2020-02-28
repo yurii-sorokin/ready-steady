@@ -1,4 +1,4 @@
-import { action, Action } from 'easy-peasy';
+import { action, Action, persist, computed, Computed } from 'easy-peasy';
 import { darkTheme, dtfTheme, lightTheme, Theme } from './theme';
 
 export enum ThemeType {
@@ -15,7 +15,7 @@ const themeDictionary = {
 
 export interface ThemeState {
   themeType: ThemeType;
-  theme: Theme;
+  theme: Computed<ThemeState, Theme>;
 }
 
 export interface ThemeModel extends ThemeState {
@@ -27,23 +27,24 @@ const defaultThemeType = ThemeType.dark;
 
 const themes = [ThemeType.dark, ThemeType.light, ThemeType.dtf];
 
-export const themeSlice: ThemeModel = {
-  themeType: defaultThemeType,
-  theme: themeDictionary[defaultThemeType],
+export const themeSlice: ThemeModel = persist(
+  {
+    themeType: defaultThemeType,
+    theme: computed(({ themeType }) => themeDictionary[themeType]),
 
-  setTheme: action((state, payload) => {
-    state.themeType = payload;
-    state.theme = themeDictionary[payload];
-  }),
+    setTheme: action((state, payload) => {
+      state.themeType = payload;
+    }),
 
-  switchTheme: action(state => {
-    const theme = themes.shift();
-    console.log(themes);
-    const themeType = themes[0];
+    switchTheme: action(state => {
+      const index = themes.indexOf(state.themeType);
+      const themeType =
+        index === themes.length - 1 ? themes[0] : themes[index + 1];
 
-    themes.push(theme!);
-
-    state.themeType = themeType;
-    state.theme = themeDictionary[themeType];
-  })
-};
+      state.themeType = themeType;
+    })
+  },
+  {
+    whitelist: ['themeType']
+  }
+);

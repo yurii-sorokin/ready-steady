@@ -12,7 +12,7 @@ export const getTvDetails = ({
   locale
 }: GetTvDetailsOptions): Promise<AppendVideos<TvShowDetails>> => {
   const api = getApi();
-  return api(`api/tvs/${id}`, {
+  return api(`/api/tvs/${id}`, {
     language: locale
   }).then(({ data }) => data);
 };

@@ -13,7 +13,7 @@ export const getGames = ({
   locale
 }: GetGamesOptions): Promise<Game[]> => {
   const api = getApi();
-  return api<Game[]>('api/games', {
+  return api<Game[]>('/api/games', {
     date: format(date, 'yyyy-MM'),
     language: locale
   }).then(({ data }) => data);

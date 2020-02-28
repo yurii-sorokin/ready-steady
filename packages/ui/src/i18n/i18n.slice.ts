@@ -1,28 +1,28 @@
-import { action, Action } from 'easy-peasy';
+import { action, Action, persist, Computed, computed } from 'easy-peasy';
 import enMessages from './translations/en.json';
 import ruMessages from './translations/ru.json';
 import ru from 'date-fns/locale/ru';
 import format from 'date-fns/format';
 
 export enum Locale {
-  en = 'en',
-  ru = 'ru'
+  en = 'en-US',
+  ru = 'ru-RU'
 }
 
 const i18nDictionary = {
-  en: enMessages,
-  ru: ruMessages
+  [Locale.en]: enMessages,
+  [Locale.ru]: ruMessages
 };
 
 const formatDictionary = {
-  en: undefined,
-  ru
+  [Locale.en]: undefined,
+  [Locale.ru]: ru
 };
 
 export interface I18nState {
   locale: Locale;
-  messages: Record<string, string>;
-  formatDate: (date: Date, format: string) => string;
+  messages: Computed<I18nState, Record<string, string>>;
+  formatDate: Computed<I18nState, (date: Date, format: string) => string>;
 }
 
 export interface I18nModel extends I18nState {
@@ -34,14 +34,19 @@ const defaultLocale = Locale.ru;
 const createFormat = (locale: Locale) => (date: Date, formatString: string) =>
   format(date, formatString, { locale: formatDictionary[locale] });
 
-export const i18nSlice: I18nModel = {
-  locale: defaultLocale,
-  messages: i18nDictionary[defaultLocale],
-  formatDate: createFormat(defaultLocale),
+export const i18nSlice: I18nModel = persist(
+  {
+    locale: defaultLocale,
+    messages: computed(({ locale }) => i18nDictionary[locale]),
+    formatDate: computed(({ locale }) => createFormat(locale)),
 
-  setLocale: action((state, payload) => {
-    state.locale = payload;
-    state.messages = i18nDictionary[payload];
-    state.formatDate = createFormat(payload);
-  })
-};
+    setLocale: action((state, payload) => {
+      state.locale = payload;
+      state.messages = i18nDictionary[payload];
+      state.formatDate = createFormat(payload);
+    })
+  },
+  {
+    whitelist: ['locale']
+  }
+);

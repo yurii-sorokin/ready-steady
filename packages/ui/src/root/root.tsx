@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useParams } from 'react-router-dom';
 import { appMessages } from '../app.messages';
 import { useSwitchTheme } from '../design-system';
 import { useMonthNav } from '../hooks/use-month-nav';
@@ -16,17 +16,18 @@ import { Lang, LangPicker } from './layout/lang-picker';
 import { Logo } from './layout/logo';
 import { MonthMenu } from './month-menu';
 import { SiteMenu } from './site-menu';
+import { useDateParam } from '../hooks/use-date-param';
 
 const now = new Date();
 
 export const Root = () => {
+  const { formatMessage } = useIntl();
   const locale = useLocale();
   const setEn = useSetLocale(Locale.en);
   const setRu = useSetLocale(Locale.ru);
   const formatDate = useFormatDate();
   const switchTheme = useSwitchTheme();
-  const [date, onPrevMonth, onNextMonth] = useMonthNav(now);
-  const { formatMessage } = useIntl();
+  const [date] = useDateParam();
 
   return (
     <Page>
@@ -36,18 +37,18 @@ export const Root = () => {
           <span>Steady</span>
           <span>Release</span>
         </Logo>
-        <MonthMenu {...{ date, onPrevMonth, onNextMonth }} />
+        <MonthMenu />
         <SiteMenu />
       </Header>
       <Main>
         <Switch>
-          <Route path="/tvs">
+          <Route path="/tvs/:date">
             <Tvs date={date} />
           </Route>
-          <Route path="/movies">
+          <Route path="/movies/:date">
             <Movies date={date} />
           </Route>
-          <Route path="/games">
+          <Route path="/games/:date">
             <Games date={date} />
           </Route>
           <Redirect to="/games" />

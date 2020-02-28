@@ -13,9 +13,8 @@ export const getMovies = ({
   locale
 }: GetMoviesOptions): Promise<Movie[]> => {
   const api = getApi();
-  return api('api/movies', {
+  return api('/api/movies', {
     date: format(date, 'yyyy-MM'),
-    region: locale,
     language: locale
   }).then(({ data }) => data);
 };
