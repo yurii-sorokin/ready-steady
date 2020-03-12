@@ -1,16 +1,14 @@
 import { action, Action, persist, computed, Computed } from 'easy-peasy';
-import { darkTheme, dtfTheme, lightTheme, Theme } from './theme';
+import { darkTheme, lightTheme, Theme } from './theme';
 
 export enum ThemeType {
   dark = 'dark',
-  light = 'light',
-  dtf = 'dtf'
+  light = 'light'
 }
 
 const themeDictionary = {
   [ThemeType.dark]: darkTheme,
-  [ThemeType.light]: lightTheme,
-  [ThemeType.dtf]: dtfTheme
+  [ThemeType.light]: lightTheme
 };
 
 export interface ThemeState {
@@ -25,12 +23,15 @@ export interface ThemeModel extends ThemeState {
 
 const defaultThemeType = ThemeType.dark;
 
-const themes = [ThemeType.dark, ThemeType.light, ThemeType.dtf];
+const themes = [ThemeType.dark, ThemeType.light];
 
 export const themeSlice: ThemeModel = persist(
   {
     themeType: defaultThemeType,
-    theme: computed(({ themeType }) => themeDictionary[themeType]),
+    theme: computed(
+      ({ themeType }) =>
+        themeDictionary[themeType] || themeDictionary[defaultThemeType]
+    ),
 
     setTheme: action((state, payload) => {
       state.themeType = payload;
@@ -39,7 +40,9 @@ export const themeSlice: ThemeModel = persist(
     switchTheme: action(state => {
       const index = themes.indexOf(state.themeType);
       const themeType =
-        index === themes.length - 1 ? themes[0] : themes[index + 1];
+        index === -1 || index === themes.length - 1
+          ? themes[0]
+          : themes[index + 1];
 
       state.themeType = themeType;
     })

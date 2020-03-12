@@ -5,7 +5,7 @@ export interface Movie {
   poster_path: string | null;
   adult: boolean;
   overview: string;
-  release_date: Date;
+  release_date: string;
   genre_ids: number[];
   original_language: string;
   backdrop_path: string | null;

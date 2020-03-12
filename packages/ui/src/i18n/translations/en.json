@@ -1,6 +1,23 @@
 {
-  "app.games": "Games",
-  "app.movies": "Movies",
-  "app.powered-by": "Powered by <link1>RAWG</link1> and <link2>TMDB</link2>",
-  "app.tvs": "Tv Shows"
+  "app.error.invalid-email": "Invalid email address.",
+  "app.error.invalid-login": "Invalid email or password.",
+  "app.error.invalid-password": "Must have at least {min} characters.",
+  "app.error.required": "Field is required.",
+  "app.error.too-many-requests": "Too many unsuccessful login attempts. Please try again later.",
+  "app.label.email": "Email",
+  "app.label.games": "Games",
+  "app.label.log-in-with-google": "Sign in with Google",
+  "app.label.movies": "Movies",
+  "app.label.password": "Password",
+  "app.label.sign-in": "Sign in",
+  "app.label.sign-up": "Sign up",
+  "app.label.sign-up-now": "Sign up now",
+  "app.label.tvs": "Tv Shows",
+  "app.text.already-member": "Already a member?",
+  "app.text.contact-me": "Contact me",
+  "app.text.not-member": "Not a member?",
+  "app.text.or": "or",
+  "app.text.powered-by": "Powered by <link1>RAWG</link1> and <link2>TMDB</link2>",
+  "app.title.sign-in-to-site": "Sign in to the website",
+  "app.title.sign-up-to-site": "Sign up to the website"
 }

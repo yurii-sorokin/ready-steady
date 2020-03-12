@@ -1,35 +1,49 @@
 import { css } from 'styled-components';
+import { theme } from './tools';
 
 export interface SystemProps {
+  w?: string;
   width?: string;
+  minWidth?: string;
+  maxWidth?: string;
+  h?: string;
   height?: string;
-  m?: string;
-  mt?: string;
-  mr?: string;
-  mb?: string;
-  ml?: string;
-  mx?: string;
-  my?: string;
-  p?: string;
-  pt?: string;
-  pr?: string;
-  pb?: string;
-  pl?: string;
-  px?: string;
-  py?: string;
+  minHeight?: string;
+  maxHeight?: string;
+  m?: string | number;
+  mt?: string | number;
+  mr?: string | number;
+  mb?: string | number;
+  ml?: string | number;
+  mx?: string | number;
+  my?: string | number;
+  p?: string | number;
+  pt?: string | number;
+  pr?: string | number;
+  pb?: string | number;
+  pl?: string | number;
+  px?: string | number;
+  py?: string | number;
 }
 
+const space = (value?: string | number) =>
+  value && theme(t => t.space[Number(value)] || value);
+
 export const system = <P extends SystemProps>(p: P) => css`
-  width: ${p.width};
-  height: ${p.height};
-  margin: ${p.m};
-  margin-left: ${p.mx || p.ml};
-  margin-right: ${p.mx || p.mr};
-  margin-top: ${p.my || p.mt};
-  margin-bottom: ${p.my || p.mb};
-  padding: ${p.p};
-  padding-left: ${p.px || p.pl};
-  padding-right: ${p.px || p.pr};
-  padding-top: ${p.py || p.pt};
-  padding-bottom: ${p.py || p.pb};
+  width: ${p.width || p.w};
+  min-width: ${p.minWidth};
+  max-width: ${p.maxWidth};
+  height: ${p.height || p.h};
+  min-height: ${p.minHeight};
+  max-height: ${p.maxHeight};
+  margin: ${space(p.m)};
+  margin-left: ${space(p.mx || p.ml)};
+  margin-right: ${space(p.mx || p.mr)};
+  margin-top: ${space(p.my || p.mt)};
+  margin-bottom: ${space(p.my || p.mb)};
+  padding: ${space(p.p)};
+  padding-left: ${space(p.px || p.pl)};
+  padding-right: ${space(p.px || p.pr)};
+  padding-top: ${space(p.py || p.pt)};
+  padding-bottom: ${space(p.py || p.pb)};
 `;

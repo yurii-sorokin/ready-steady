@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { TvShow } from '../../api/tmdb/types';
 import { useGroupByDate } from '../../hooks/use-group-by-date';
+import { useSubscriptions } from '../../hooks/use-subscriptions';
 import { Calendar } from '../../shared/calendar';
 import { Spinner, SpinnerCenter } from '../../shared/spinner';
 import { TvCard } from './card';
@@ -8,6 +9,8 @@ import { useTvBg, useTvs } from './use-tvs';
 
 export const Tvs: FC<{ date: Date }> = ({ date }) => {
   const { data: tvs = [], loading } = useTvs(date);
+  const subscriptions = useSubscriptions({ date, type: 'tv' });
+
   const maxPopularity = useMemo(
     () => tvs.slice(0, 10).reduce((r, m) => r + m.popularity || 0, 0) / 10,
     [tvs]
@@ -15,7 +18,13 @@ export const Tvs: FC<{ date: Date }> = ({ date }) => {
   const tvsByDay = useGroupByDate(tvs, 'first_air_date');
   const bgUrl = useTvBg(tvs);
   const render = useCallback(
-    item => <TvCard tv={item} maxPopularity={maxPopularity} />,
+    (item, { subscription }) => (
+      <TvCard
+        tv={item}
+        maxPopularity={maxPopularity}
+        subscription={subscription}
+      />
+    ),
     [maxPopularity]
   );
 
@@ -32,8 +41,11 @@ export const Tvs: FC<{ date: Date }> = ({ date }) => {
       date={date}
       bgUrl={bgUrl}
       dataGroupedByDay={tvsByDay}
+      subscriptions={subscriptions}
       maxColumnCount={3}
       render={render}
     />
   );
 };
+
+export default Tvs;

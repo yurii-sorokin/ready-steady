@@ -6,7 +6,7 @@ export const useRequest = <T extends unknown>(
   request: (abortController: AbortController) => Promise<T>
 ) => {
   const [{ data, loading, error }, setState] = useState<RequestState<T>>({
-    loading: false
+    loading: true
   });
 
   useEffect(() => {

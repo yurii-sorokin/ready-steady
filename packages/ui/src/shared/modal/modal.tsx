@@ -1,9 +1,11 @@
+import useKey from '@rooks/use-key';
 import transparentize from 'polished/lib/color/transparentize';
-import { up, down } from 'styled-breakpoints';
+import React, { FC, MouseEvent, useCallback, useRef } from 'react';
+import { down, up } from 'styled-breakpoints';
 import styled from 'styled-components';
-import { box, Size, theme } from '../../design-system';
+import { box, Size, system, SystemProps, theme } from '../../design-system';
 
-export const Modal = styled.div`
+export const ModalDialog = styled.div<SystemProps>`
   ${box}
   position: fixed;
   bottom: 0;
@@ -27,6 +29,7 @@ export const Modal = styled.div`
   ${up(Size.md)} {
     bottom: unset;
     width: 500px;
+    height: auto;
     max-height: 80vh;
     top: 50%;
     left: 50%;
@@ -34,6 +37,8 @@ export const Modal = styled.div`
     margin: 0;
     border-radius: ${theme(t => t.radii.small)};
   }
+
+  ${system}
 `;
 
 export const ModalOverlay = styled.div`
@@ -46,3 +51,28 @@ export const ModalOverlay = styled.div`
   z-index: 99;
   background-color: ${theme(t => transparentize(0.1, t.colors.card.normal))};
 `;
+
+export interface ModalProps extends SystemProps {
+  onClose: () => void;
+}
+
+export const Modal: FC<ModalProps> = ({ children, onClose, ...props }) => {
+  const modalRef = useRef<any>(null);
+  const onClick = useCallback(
+    (e: MouseEvent<any>) => {
+      if (!modalRef.current || !modalRef.current.contains(e.target as any)) {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+  useKey(['Escape'], onClose);
+
+  return (
+    <ModalOverlay onClick={onClick}>
+      <ModalDialog ref={modalRef} {...props}>
+        {children}
+      </ModalDialog>
+    </ModalOverlay>
+  );
+};

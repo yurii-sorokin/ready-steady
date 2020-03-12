@@ -29,10 +29,15 @@
       "error",
       { "paths": ["date-fns", "date-fns/fp", "polished"] }
     ],
-    "react-hooks/rules-of-hooks": "error",
+    "no-useless-rename": "error",
+    "object-shorthand": ["error", "always"],
     "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react/display-name": "off",
     "react/prop-types": "off",
     "promise/always-return": "off",
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "promise/no-nesting": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }

@@ -6,6 +6,7 @@ import { box, Size, theme } from '../../design-system';
 export const Footer = styled.footer`
   ${box}
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding: ${theme(t => t.space[2])};
   background-color: ${theme(t => rgba(t.colors.primary.normal, 0.95))};

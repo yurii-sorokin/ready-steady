@@ -5,10 +5,19 @@ import { system, SystemProps, theme } from '../../design-system';
 const defaultSrc =
   'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
-export const ImgUnstyled: FC<{
+export interface ImgProps {
   src?: string | null;
+  alt: string;
   fallbackSrc?: string | null;
-}> = ({ src, fallbackSrc, ...props }) => {
+  onClick?: () => void;
+}
+
+export const ImgUnstyled: FC<ImgProps> = ({
+  src,
+  fallbackSrc,
+  alt,
+  ...props
+}) => {
   const [safeSrc, setSafeSrc] = useState<string | undefined>(
     src || fallbackSrc || defaultSrc || undefined
   );
@@ -21,9 +30,9 @@ export const ImgUnstyled: FC<{
       {...{
         ...props,
         src: safeSrc,
+        alt,
         decoding: 'async',
         loading: 'lazy',
-        alt: ' ',
         onError
       }}
     />

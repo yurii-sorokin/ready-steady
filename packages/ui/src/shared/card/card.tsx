@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components';
-import { box, switchProp, Size, theme } from '../../design-system';
-import { Img } from '../img';
 import { up } from 'styled-breakpoints';
+import styled, { css } from 'styled-components';
+import { box, Size, switchProp, theme } from '../../design-system';
+import { Img } from '../img';
 
 export const CardContent = styled.div`
   ${box}
@@ -30,8 +30,15 @@ export const CardPoster = styled(Img)`
   height: 150px;
 `;
 
-export const Card = styled.div<{ size?: Size }>`
+export interface CardProps {
+  size?: Size;
+}
+
+export const Card = styled.div.attrs(({ size }: CardProps) => ({
+  'x-size': size
+}))<CardProps>`
   ${box};
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -42,6 +49,7 @@ export const Card = styled.div<{ size?: Size }>`
   border-radius: ${theme(t => t.radii.normal)};
   background-color: ${theme(t => t.colors.card.normal)};
   color: ${theme(t => t.colors.text.primary)};
+  cursor: pointer;
 
   ${up(Size.lg)} {
     ${switchProp('size', {

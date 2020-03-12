@@ -6,8 +6,8 @@ import { NetworkIcon } from '../../../shared/icon/network';
 
 export const NetworkList: FC<{ networks: Network[] }> = ({ networks }) => (
   <IconList>
-    {(networks || []).map(({ logo_path }) => (
-      <NetworkIcon key={logo_path} src={logo_path} />
+    {(networks || []).map(({ name, logo_path }) => (
+      <NetworkIcon alt={name} key={logo_path} src={logo_path} />
     ))}
   </IconList>
 );

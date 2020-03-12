@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent, useCallback, useRef } from 'react';
+import LazyLoad from 'react-lazyload';
 import { useModal } from 'react-modal-hook';
 import Truncate from 'react-truncate';
-import LazyLoad from 'react-lazyload';
 import { Game } from '../../../api/rawg/types';
 import { Size } from '../../../design-system';
+import { Subscription } from '../../../firebase/store';
 import {
   Card,
   CardContent,
@@ -11,34 +12,72 @@ import {
   CardPoster,
   CardTitle
 } from '../../../shared/card';
-import { Modal, ModalOverlay } from '../../../shared/modal';
+import { SubscriptionIcon } from '../../../shared/card/subscription';
+import { Modal } from '../../../shared/modal';
 import { GameDetails } from '../details';
 import { PlatformList } from '../platform-list';
+import { createPortal } from 'react-dom';
 
-export const GameCard: FC<{ game: Game; maxAdded: number }> = ({
+interface GameCardProps {
+  game: Game;
+  maxAdded: number;
+  subscription?: Subscription;
+}
+
+export const GameCard: FC<GameCardProps> = ({
   game,
-  maxAdded
+  maxAdded,
+  subscription
 }) => {
   const rate = game.added / maxAdded;
   const size = rate >= 0.7 ? Size.md : rate < 0.05 ? Size.xs : Size.sm;
 
   const [showModal, hideModal] = useModal(
-    () => (
-      <ModalOverlay onClick={hideModal}>
-        <Modal>
-          <GameDetails game={game} />
-        </Modal>
-      </ModalOverlay>
-    ),
-    [game]
+    () =>
+      createPortal(
+        <Modal onClose={hideModal}>
+          <GameDetails
+            onClick={hideModal}
+            game={game}
+            subscription={subscription}
+          />
+        </Modal>,
+        document.body
+      ),
+    [game, subscription]
+  );
+
+  const bellRef = useRef<HTMLElement>(null);
+
+  const onCardClick = useCallback(
+    (e: MouseEvent) => {
+      if (!bellRef.current || !bellRef.current.contains(e.target as any)) {
+        showModal();
+      }
+    },
+    [showModal]
   );
 
   return (
     <>
-      <Card size={size} onClick={showModal}>
+      <Card size={size} onClick={onCardClick}>
         <CardContent>
+          <SubscriptionIcon
+            on={!!subscription}
+            type="game"
+            id={game.id}
+            title={game.name}
+            date={game.released}
+            ref={bellRef as any}
+          />
           <LazyLoad>
-            <CardPoster src={game.background_image} />
+            <CardPoster
+              alt={game.name}
+              src={game.background_image?.replace(
+                '/media/',
+                '/media/crop/600/400/'
+              )}
+            />
           </LazyLoad>
         </CardContent>
         <CardFooter>

@@ -1,22 +1,22 @@
-import React, { useMemo } from 'react';
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import { useIntl } from 'react-intl';
-import { Redirect, Route, Switch, useParams } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { appMessages } from '../app.messages';
 import { useSwitchTheme } from '../design-system';
-import { useMonthNav } from '../hooks/use-month-nav';
+import { useDateParam } from '../hooks/use-date-param';
 import { Locale, useFormatDate, useLocale, useSetLocale } from '../i18n';
-import { Games } from '../screens/games';
-import { Movies } from '../screens/movies';
-import { Tvs } from '../screens/tvs';
-import { ExternalLink } from '../shared/link';
+import { Games } from '../screens/games/lazy';
+import { Movies } from '../screens/movies/lazy';
+import { Tvs } from '../screens/tvs/lazy';
+import { Anchor, ExternalAnchor } from '../shared/anchor';
+import { Box } from '../shared/box';
 import { Footer, Header, Main, Page } from './layout';
-import { Attribution } from './layout/attribution';
-import { Copyright } from './layout/copyright';
 import { Lang, LangPicker } from './layout/lang-picker';
 import { Logo } from './layout/logo';
 import { MonthMenu } from './month-menu';
 import { SiteMenu } from './site-menu';
-import { useDateParam } from '../hooks/use-date-param';
 
 const now = new Date();
 
@@ -51,31 +51,36 @@ export const Root = () => {
           <Route path="/games/:date">
             <Games date={date} />
           </Route>
-          <Redirect to="/games" />
         </Switch>
       </Main>
       <Footer>
-        <Copyright>© {formatDate(now, 'yyyy')}</Copyright>
-        <Attribution>
+        <Box>© {formatDate(now, 'yyyy')}</Box>
+        <Box mx={2}>
+          <Anchor href="mailto:ready.steady.release@gmail.com">
+            <FontAwesomeIcon icon={faEnvelope} />{' '}
+            {formatMessage(appMessages.contactMe)}
+          </Anchor>
+        </Box>
+        <Box>
           {formatMessage(appMessages.poweredBy, {
             /* eslint-disable react/display-name */
             link1: value => (
-              <ExternalLink href="https://rawg.io/">{value}</ExternalLink>
+              <ExternalAnchor href="https://rawg.io/">{value}</ExternalAnchor>
             ),
             link2: value => (
-              <ExternalLink href="https://www.themoviedb.org/">
+              <ExternalAnchor href="https://www.themoviedb.org/">
                 {value}
-              </ExternalLink>
+              </ExternalAnchor>
             )
             /* eslint-enable react/display-name */
           })}
-        </Attribution>
+        </Box>
         <LangPicker>
           <Lang active={locale === Locale.en} onClick={setEn}>
-            eng
+            EN
           </Lang>
           <Lang active={locale === Locale.ru} onClick={setRu}>
-            рус
+            РУ
           </Lang>
         </LangPicker>
       </Footer>

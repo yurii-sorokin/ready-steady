@@ -1,6 +1,23 @@
 {
-  "app.games": "Игры",
-  "app.movies": "Фильмы",
-  "app.powered-by": "На базе <link1>RAWG</link1> и <link2>TMDB</link2>",
-  "app.tvs": "Сериалы"
+  "app.error.invalid-email": "Неправильный адрес почты.",
+  "app.error.invalid-login": "Неправильная почта или пароль.",
+  "app.error.invalid-password": "Должен содержать минимум {min} символа.",
+  "app.error.required": "Поле обязательно для ввода.",
+  "app.error.too-many-requests": "Слишком много неудачных попыток. Попробуйте позже.",
+  "app.label.email": "Почта",
+  "app.label.games": "Игры",
+  "app.label.log-in-with-google": "Войти с помощью Google",
+  "app.label.movies": "Фильмы",
+  "app.label.password": "Пароль",
+  "app.label.sign-in": "Войти",
+  "app.label.sign-up": "Зарегистрироваться",
+  "app.label.sign-up-now": "Зарегистрироваться",
+  "app.label.tvs": "Сериалы",
+  "app.text.already-member": "Уже есть аккаунт?",
+  "app.text.contact-me": "Связаться",
+  "app.text.not-member": "Еще нет аккаунта?",
+  "app.text.or": "или",
+  "app.text.powered-by": "На базе <link1>RAWG</link1> и <link2>TMDB</link2>",
+  "app.title.sign-in-to-site": "Войти на сайт",
+  "app.title.sign-up-to-site": "Зарегистрироваться на сайте"
 }

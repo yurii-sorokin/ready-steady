@@ -24,7 +24,7 @@ if (firebase) {
   messaging.setBackgroundMessageHandler(payload => {
     console.log('Received background message ', payload);
 
-    // return self.registration.showNotification('Title', { body: 'Message.' });
+    return self.registration.showNotification('Title', { body: 'Message.' });
   });
 } else {
   console.log(`Boo! Firebase didn't load 😬`);

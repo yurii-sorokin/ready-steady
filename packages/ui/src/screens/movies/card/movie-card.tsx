@@ -1,43 +1,76 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent, useCallback, useRef } from 'react';
+import LazyLoad from 'react-lazyload';
 import { useModal } from 'react-modal-hook';
 import Truncate from 'react-truncate';
-import LazyLoad from 'react-lazyload';
 import { Movie } from '../../../api/tmdb/types';
 import { Size } from '../../../design-system';
+import { Subscription } from '../../../firebase/store';
 import {
   Card,
+  CardContent,
   CardFooter,
   CardPoster,
-  CardTitle,
-  CardContent
+  CardTitle
 } from '../../../shared/card';
-import { Modal, ModalOverlay } from '../../../shared/modal';
+import { SubscriptionIcon } from '../../../shared/card/subscription';
+import { Modal } from '../../../shared/modal';
 import { MovieDetails } from '../details';
+import { createPortal } from 'react-dom';
 
-export const MovieCard: FC<{ movie: Movie; maxPopularity: number }> = ({
+interface MovieCardProps {
+  movie: Movie;
+  maxPopularity: number;
+  subscription?: Subscription;
+}
+
+export const MovieCard: FC<MovieCardProps> = ({
   movie,
-  maxPopularity
+  maxPopularity,
+  subscription
 }) => {
   const rate = movie.popularity / maxPopularity;
   const size = rate >= 0.05 ? Size.sm : Size.xs;
 
   const [showModal, hideModal] = useModal(
-    () => (
-      <ModalOverlay onClick={hideModal}>
-        <Modal>
-          <MovieDetails movie={movie} />
-        </Modal>
-      </ModalOverlay>
-    ),
-    [movie]
+    () =>
+      createPortal(
+        <Modal onClose={hideModal}>
+          <MovieDetails
+            movie={movie}
+            onClick={hideModal}
+            subscription={subscription}
+          />
+        </Modal>,
+        document.body
+      ),
+    [movie, subscription]
+  );
+
+  const bellRef = useRef<HTMLElement>(null);
+
+  const onCardClick = useCallback(
+    (e: MouseEvent) => {
+      if (!bellRef.current || !bellRef.current.contains(e.target as any)) {
+        showModal();
+      }
+    },
+    [showModal]
   );
 
   return (
     <>
-      <Card size={size} onClick={showModal}>
+      <Card size={size} onClick={onCardClick}>
+        <SubscriptionIcon
+          on={!!subscription}
+          type="movie"
+          id={movie.id}
+          title={movie.title}
+          date={movie.release_date}
+          ref={bellRef as any}
+        />
         <CardContent>
           <LazyLoad>
-            <CardPoster src={movie.poster_path} />
+            <CardPoster alt={movie.title} src={movie.poster_path} />
           </LazyLoad>
         </CardContent>
         <CardFooter>

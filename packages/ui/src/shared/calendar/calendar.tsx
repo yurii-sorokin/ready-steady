@@ -2,6 +2,7 @@ import getDate from 'date-fns/getDate';
 import isSameMonth from 'date-fns/isSameMonth';
 import isToday from 'date-fns/isToday';
 import React, { ReactElement, useMemo } from 'react';
+import { Subscription } from '../../firebase/store';
 import { useFormatDate } from '../../i18n';
 import { Bg } from '../bg';
 import { EmptyCard } from '../card';
@@ -16,17 +17,19 @@ import {
 import { useColumnSizes } from './use-column-sizes';
 import { useMonthCalendar } from './use-month-calendar';
 
-interface CalendarProps<T extends { id: string | number }> {
+export interface CalendarProps<T extends { id: string | number }> {
   date: Date;
   dataGroupedByDay: { [key: string]: T[] };
   maxColumnCount: number;
   bgUrl?: string | null;
-  render: (item: T) => ReactElement;
+  subscriptions: Subscription[];
+  render: (item: T, meta: { subscription?: Subscription }) => ReactElement;
 }
 
 export const Calendar = <T extends { id: string | number }>({
   date,
   dataGroupedByDay,
+  subscriptions,
   bgUrl,
   maxColumnCount,
   render
@@ -79,14 +82,20 @@ export const Calendar = <T extends { id: string | number }>({
                       </DayIndicator>
                       <DayItemList>
                         {dayItems ? (
-                          dayItems.map(item => (
-                            <DayItem
-                              key={item.id}
-                              width={`${100 / columnSizes[i]}%`}
-                            >
-                              {render(item)}
-                            </DayItem>
-                          ))
+                          dayItems.map(item => {
+                            const subscription = subscriptions.find(
+                              ({ id }) => id === String(item.id)
+                            );
+
+                            return (
+                              <DayItem
+                                key={item.id}
+                                width={`${100 / columnSizes[i]}%`}
+                              >
+                                {render(item, { subscription })}
+                              </DayItem>
+                            );
+                          })
                         ) : (
                           <DayItem>
                             <EmptyCard />

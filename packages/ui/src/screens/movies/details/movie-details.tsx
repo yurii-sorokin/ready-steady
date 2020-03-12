@@ -14,8 +14,20 @@ import { YouTube } from '../../../shared/youtube';
 import { FlagList } from '../flag-list';
 import { useMovieDetails } from '../use-movies';
 import { Spinner, SpinnerCenter } from '../../../shared/spinner';
+import { Subscription } from '../../../firebase/store';
+import { SubscriptionIcon } from '../../../shared/card/subscription';
 
-export const MovieDetails: FC<{ movie: Movie }> = ({ movie }) => {
+export interface MovieDetailsProps {
+  movie: Movie;
+  subscription?: Subscription;
+  onClick?: () => void;
+}
+
+export const MovieDetails: FC<MovieDetailsProps> = ({
+  movie,
+  subscription,
+  onClick
+}) => {
   const { data: movieDetails, loading } = useMovieDetails(movie.id);
   const cardRef = useRef<HTMLElement>();
 
@@ -34,17 +46,26 @@ export const MovieDetails: FC<{ movie: Movie }> = ({ movie }) => {
       ) : (
         movieDetails && (
           <>
+            <SubscriptionIcon
+              on={!!subscription}
+              type="movie"
+              id={movie.id}
+              title={movie.title}
+              date={movie.release_date}
+            />
             <CardDetailsPoster>
               {movieDetails.videos.results[0] ? (
                 <YouTube id={movieDetails.videos.results[0].key} width="100%" />
               ) : (
                 <Img
+                  onClick={onClick}
+                  alt={movieDetails.title}
                   src={movieDetails.backdrop_path}
                   fallbackSrc={movieDetails.poster_path}
                 />
               )}
             </CardDetailsPoster>
-            <CardDetailsFooter>
+            <CardDetailsFooter onClick={onClick}>
               <FlagList countries={movieDetails.production_countries} />
               <TagList>
                 {movieDetails.genres.map(({ name }) => (

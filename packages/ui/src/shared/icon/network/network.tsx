@@ -4,7 +4,7 @@ import { Img } from '../../img';
 
 export const NetworkIcon = styled(Img)`
   ${box}
-  display: block;
+  display: inline-block;
   height: 24px;
   margin: 3px;
   border-radius: ${theme(t => t.radii.small)};

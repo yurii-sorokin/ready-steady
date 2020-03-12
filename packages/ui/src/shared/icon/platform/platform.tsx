@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { ReactComponent as XboxIcon } from 'simple-icons/icons/xbox.svg';
 import { ReactComponent as PlayStationIcon } from 'simple-icons/icons/playstation.svg';
@@ -15,23 +15,33 @@ import { box } from '../../../design-system';
 export const PlatformIconUnstyled: FC<{ slug: string }> = ({
   slug,
   ...props
-}) => (
-  <div {...props}>
-    {slug.includes('xbox') && <XboxIcon />}
-    {slug.includes('playstation') && <PlayStationIcon />}
-    {slug.includes('pc') && <WindowsIcon />}
-    {slug.includes('mac') && <AppleIcon />}
-    {slug.includes('nintendo-switch') && <NintendoSwitchIcon />}
-    {slug.includes('android') && <AndroidIcon />}
-    {slug.includes('linux') && <LinuxIcon />}
-    {slug.includes('wii') && <WiiIcon />}
-    {slug.includes('wii-u') && <WiiUIcon />}
-  </div>
-);
+}) => {
+  const Icon = useMemo(
+    () =>
+      [
+        slug.includes('xbox') && XboxIcon,
+        slug.includes('playstation') && PlayStationIcon,
+        slug.includes('pc') && WindowsIcon,
+        slug.includes('mac') && AppleIcon,
+        slug.includes('nintendo-switch') && NintendoSwitchIcon,
+        slug.includes('android') && AndroidIcon,
+        slug.includes('linux') && LinuxIcon,
+        slug.includes('wii') && WiiIcon,
+        slug.includes('wii-u') && WiiUIcon
+      ].find(Boolean),
+    [slug]
+  );
+
+  return Icon ? (
+    <div {...props}>
+      <Icon />
+    </div>
+  ) : null;
+};
 
 export const PlatformIcon = styled(PlatformIconUnstyled)`
   ${box}
-  display: block;
+  display: inline-block;
   fill: currentColor;
 
   svg {

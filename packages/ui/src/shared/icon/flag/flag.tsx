@@ -29,7 +29,7 @@ export const FlagIconUnstyled: FC<{ code: string }> = ({ code, ...props }) => {
 };
 
 export const FlagIcon = styled(FlagIconUnstyled)`
-  display: block;
+  display: inline-block;
   width: 17px;
   height: 14px;
 `;

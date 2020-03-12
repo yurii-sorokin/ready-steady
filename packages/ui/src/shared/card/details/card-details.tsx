@@ -1,4 +1,4 @@
-import { up, down } from 'styled-breakpoints';
+import { down, up } from 'styled-breakpoints';
 import styled from 'styled-components';
 import { box, Size, theme } from '../../../design-system';
 import { Img } from '../../img';
