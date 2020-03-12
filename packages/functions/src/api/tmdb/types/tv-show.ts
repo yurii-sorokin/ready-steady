@@ -11,5 +11,5 @@ export interface TvShow {
   genre_ids: number[];
   original_language: string;
   vote_count: number;
-  first_air_date: Date;
+  first_air_date: string;
 }

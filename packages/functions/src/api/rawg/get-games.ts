@@ -16,8 +16,6 @@ export const getGames = async ({ date, language = '' }: GetGamesOptions) => {
   const searchParams = {
     lang: language,
     dates: `${from},${to}`,
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    exclude_additions: true,
     ordering: '-added'
   };
 
