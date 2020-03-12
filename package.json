@@ -9,6 +9,7 @@
   "scripts": {
     "prebuild": "lerna bootstrap",
     "build": "lerna run build --parallel",
+    "start:dev": "lerna run start:dev --parallel",
     "start:dev:firebase": "lerna run start:dev:firebase --parallel",
     "start:dev:zeit": "lerna run start:dev:zeit --parallel",
     "lint": "lerna run lint --parallel"
