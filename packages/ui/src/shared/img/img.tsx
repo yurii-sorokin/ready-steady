@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState, memo } from 'react';
 import styled from 'styled-components';
 import { system, SystemProps, theme } from '../../design-system';
 
@@ -12,32 +12,29 @@ export interface ImgProps {
   onClick?: () => void;
 }
 
-export const ImgUnstyled: FC<ImgProps> = ({
-  src,
-  fallbackSrc,
-  alt,
-  ...props
-}) => {
-  const [safeSrc, setSafeSrc] = useState<string | undefined>(
-    src || fallbackSrc || defaultSrc || undefined
-  );
-  const onError = useCallback(() => setSafeSrc(fallbackSrc || defaultSrc), [
-    fallbackSrc
-  ]);
+export const ImgUnstyled: FC<ImgProps> = memo(
+  ({ src, fallbackSrc, alt, ...props }) => {
+    const [safeSrc, setSafeSrc] = useState<string | undefined>(
+      src || fallbackSrc || defaultSrc || undefined
+    );
+    const onError = useCallback(() => setSafeSrc(fallbackSrc || defaultSrc), [
+      fallbackSrc
+    ]);
 
-  return (
-    <img
-      {...{
-        ...props,
-        src: safeSrc,
-        alt,
-        decoding: 'async',
-        loading: 'lazy',
-        onError
-      }}
-    />
-  );
-};
+    return (
+      <img
+        {...{
+          ...props,
+          src: safeSrc,
+          alt,
+          decoding: 'async',
+          loading: 'lazy',
+          onError
+        }}
+      />
+    );
+  }
+);
 
 export const Img = styled(ImgUnstyled)<SystemProps>`
   display: block;

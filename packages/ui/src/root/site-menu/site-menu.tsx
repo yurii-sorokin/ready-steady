@@ -2,13 +2,13 @@ import { faFilm } from '@fortawesome/free-solid-svg-icons/faFilm';
 import { faGamepad } from '@fortawesome/free-solid-svg-icons/faGamepad';
 import { faTv } from '@fortawesome/free-solid-svg-icons/faTv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { useIntl } from 'react-intl';
 import { appMessages } from '../../app.messages';
 import { SiteItem, SiteLink, SiteList, SiteNav, SiteText } from './nav';
 import { useParams } from 'react-router-dom';
 
-export const SiteMenu: FC = () => {
+export const SiteMenu: FC = memo(() => {
   const { formatMessage } = useIntl();
   const { date } = useParams();
 
@@ -36,4 +36,4 @@ export const SiteMenu: FC = () => {
       </SiteList>
     </SiteNav>
   );
-};
+});

@@ -1,6 +1,6 @@
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { memo } from 'react';
 import { useIntl } from 'react-intl';
 import { Route, Switch } from 'react-router-dom';
 import { appMessages } from '../app.messages';
@@ -20,7 +20,7 @@ import { SiteMenu } from './site-menu';
 
 const now = new Date();
 
-export const Root = () => {
+export const Root = memo(() => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const setEn = useSetLocale(Locale.en);
@@ -86,4 +86,4 @@ export const Root = () => {
       </Footer>
     </Page>
   );
-};
+});

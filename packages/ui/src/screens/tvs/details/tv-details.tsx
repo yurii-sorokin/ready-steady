@@ -1,4 +1,4 @@
-import React, { FC, useRef, useLayoutEffect } from 'react';
+import React, { FC, useRef, useLayoutEffect, memo } from 'react';
 import { Img } from '../../../shared/img';
 import { Tag, TagList } from '../../../shared/tag-list';
 import { Description } from '../../../shared/card/details/description';
@@ -23,61 +23,59 @@ export interface TvDetailsProps {
   onClick?: () => void;
 }
 
-export const TvDetails: FC<TvDetailsProps> = ({
-  tv,
-  subscription,
-  onClick
-}) => {
-  const { data: tvDetails, loading } = useTvDetails(tv.id);
-  const cardRef = useRef<HTMLElement>();
+export const TvDetails: FC<TvDetailsProps> = memo(
+  ({ tv, subscription, onClick }) => {
+    const { data: tvDetails, loading } = useTvDetails(tv.id);
+    const cardRef = useRef<HTMLElement>();
 
-  useLayoutEffect(() => {
-    const node = cardRef.current;
-    node && disableBodyScroll(node);
-    return () => node && enableBodyScroll(node);
-  });
+    useLayoutEffect(() => {
+      const node = cardRef.current;
+      node && disableBodyScroll(node);
+      return () => node && enableBodyScroll(node);
+    });
 
-  return (
-    <CardDetails ref={cardRef as never}>
-      {loading ? (
-        <SpinnerCenter>
-          <Spinner />
-        </SpinnerCenter>
-      ) : (
-        tvDetails && (
-          <>
-            <SubscriptionIcon
-              on={!!subscription}
-              type="tv"
-              id={tv.id}
-              title={tv.name}
-              date={tv.first_air_date}
-            />
-            <CardDetailsPoster>
-              {tvDetails.videos.results[0] ? (
-                <YouTube id={tvDetails.videos.results[0].key} />
-              ) : (
-                <Img
-                  onClick={onClick}
-                  src={tvDetails.backdrop_path}
-                  alt={tvDetails.name}
-                  fallbackSrc={tvDetails.poster_path}
-                />
-              )}
-            </CardDetailsPoster>
-            <CardDetailsFooter onClick={onClick}>
-              <NetworkList networks={tvDetails.networks} />
-              <TagList>
-                {tvDetails.genres.map(({ name }) => (
-                  <Tag key={name}>{name}</Tag>
-                ))}
-              </TagList>
-              <Title>{tvDetails.name}</Title>
-              <Description>{tvDetails.overview}</Description>
-            </CardDetailsFooter>
-          </>
-        )
-      )}
-    </CardDetails>
-  );
-};
+    return (
+      <CardDetails ref={cardRef as never}>
+        {loading ? (
+          <SpinnerCenter>
+            <Spinner />
+          </SpinnerCenter>
+        ) : (
+          tvDetails && (
+            <>
+              <SubscriptionIcon
+                on={!!subscription}
+                type="tv"
+                id={tv.id}
+                title={tv.name}
+                date={tv.first_air_date}
+              />
+              <CardDetailsPoster>
+                {tvDetails.videos.results[0] ? (
+                  <YouTube id={tvDetails.videos.results[0].key} />
+                ) : (
+                  <Img
+                    onClick={onClick}
+                    src={tvDetails.backdrop_path}
+                    alt={tvDetails.name}
+                    fallbackSrc={tvDetails.poster_path}
+                  />
+                )}
+              </CardDetailsPoster>
+              <CardDetailsFooter onClick={onClick}>
+                <NetworkList networks={tvDetails.networks} />
+                <TagList>
+                  {tvDetails.genres.map(({ name }) => (
+                    <Tag key={name}>{name}</Tag>
+                  ))}
+                </TagList>
+                <Title>{tvDetails.name}</Title>
+                <Description>{tvDetails.overview}</Description>
+              </CardDetailsFooter>
+            </>
+          )
+        )}
+      </CardDetails>
+    );
+  }
+);

@@ -2,6 +2,7 @@ import { up } from 'styled-breakpoints';
 import styled, { css } from 'styled-components';
 import { box, Size, switchProp, theme } from '../../design-system';
 import { Img } from '../img';
+import { IconList } from './details/icon-list';
 
 export const CardContent = styled.div`
   ${box}
@@ -31,6 +32,7 @@ export const CardPoster = styled(Img)`
 `;
 
 export interface CardProps {
+  index: number;
   size?: Size;
 }
 
@@ -61,6 +63,9 @@ export const Card = styled.div.attrs(({ size }: CardProps) => ({
         ${CardFooter} {
           font-size: 0rem;
           padding: ${theme(t => t.space[1])};
+        }
+        ${IconList} {
+          display: none;
         }
       `,
       [Size.sm]: css`

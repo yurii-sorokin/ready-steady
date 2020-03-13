@@ -2,13 +2,13 @@ import { faLongArrowAltLeft } from '@fortawesome/free-solid-svg-icons/faLongArro
 import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons/faLongArrowAltRight';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useKey from '@rooks/use-key';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { useFormatDate } from '../../i18n';
 import { MonthDate, MonthDateShort, MonthNav, MonthNavButton } from './nav';
 import { useMonthNav } from '../../hooks/use-month-nav';
 import { useDateParam } from '../../hooks/use-date-param';
 
-export const MonthMenu: FC = () => {
+export const MonthMenu: FC = memo(() => {
   const [date] = useDateParam();
   const [onPrevMonth, onNextMonth] = useMonthNav(date);
 
@@ -29,4 +29,4 @@ export const MonthMenu: FC = () => {
       </MonthNavButton>
     </MonthNav>
   );
-};
+});

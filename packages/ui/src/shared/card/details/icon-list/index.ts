@@ -6,6 +6,7 @@ import { PlatformIcon } from '../../../icon/platform';
 
 export const IconList = styled.div`
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: ${theme(t => t.space[1])};
 
   ${FlagIcon}, ${PlatformIcon}, ${NetworkIcon} {

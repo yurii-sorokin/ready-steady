@@ -1,27 +1,32 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, memo } from 'react';
 import { Movie } from '../../api/tmdb/types';
-import { useGroupByDate } from '../../hooks/use-group-by-date';
 import { useSubscriptions } from '../../hooks/use-subscriptions';
 import { Calendar } from '../../shared/calendar';
 import { Spinner, SpinnerCenter } from '../../shared/spinner';
 import { MovieCard } from './card';
 import { useMovieBg, useMovies } from './use-movies';
 
-export const Movies: FC<{ date: Date }> = ({ date }) => {
-  const { data: movies = [], loading } = useMovies(date);
-  const subscriptions = useSubscriptions({ date, type: 'movie' });
-
-  const maxPopularity = useMemo(
+const useMaxPopularity = (movies: Movie[]) =>
+  useMemo(
     () => movies.slice(0, 10).reduce((r, m) => r + m.popularity || 0, 0) / 10,
     [movies]
   );
 
-  const moviesByDay = useGroupByDate(movies, 'release_date');
+export interface MoviesProps {
+  date: Date;
+}
+
+export const Movies: FC<MoviesProps> = memo(({ date }) => {
+  const { data: movies = [], loading } = useMovies(date);
+  const subscriptions = useSubscriptions({ date, type: 'movie' });
+  const maxPopularity = useMaxPopularity(movies);
   const bgUrl = useMovieBg(movies);
+
   const render = useCallback(
-    (item, { subscription }) => (
+    (item, { subscription, index }) => (
       <MovieCard
         movie={item}
+        index={index}
         maxPopularity={maxPopularity}
         subscription={subscription}
       />
@@ -39,14 +44,15 @@ export const Movies: FC<{ date: Date }> = ({ date }) => {
 
   return (
     <Calendar<Movie>
+      data={movies}
+      groupBy="release_date"
       date={date}
       bgUrl={bgUrl}
-      dataGroupedByDay={moviesByDay}
       subscriptions={subscriptions}
       maxColumnCount={6}
       render={render}
     />
   );
-};
+});
 
 export default Movies;

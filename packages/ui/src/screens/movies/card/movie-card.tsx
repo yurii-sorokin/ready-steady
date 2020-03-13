@@ -20,12 +20,14 @@ import { createPortal } from 'react-dom';
 interface MovieCardProps {
   movie: Movie;
   maxPopularity: number;
+  index: number;
   subscription?: Subscription;
 }
 
 export const MovieCard: FC<MovieCardProps> = ({
   movie,
   maxPopularity,
+  index,
   subscription
 }) => {
   const rate = movie.popularity / maxPopularity;
@@ -58,29 +60,27 @@ export const MovieCard: FC<MovieCardProps> = ({
   );
 
   return (
-    <>
-      <Card size={size} onClick={onCardClick}>
-        <SubscriptionIcon
-          on={!!subscription}
-          type="movie"
-          id={movie.id}
-          title={movie.title}
-          date={movie.release_date}
-          ref={bellRef as any}
-        />
-        <CardContent>
-          <LazyLoad>
-            <CardPoster alt={movie.title} src={movie.poster_path} />
-          </LazyLoad>
-        </CardContent>
-        <CardFooter>
-          <CardTitle>
-            <Truncate lines={3} trimWhitespace>
-              {movie.title}
-            </Truncate>
-          </CardTitle>
-        </CardFooter>
-      </Card>
-    </>
+    <Card index={index} size={size} onClick={onCardClick}>
+      <SubscriptionIcon
+        on={!!subscription}
+        type="movie"
+        id={movie.id}
+        title={movie.title}
+        date={movie.release_date}
+        ref={bellRef as any}
+      />
+      <CardContent>
+        <LazyLoad>
+          <CardPoster alt={movie.title} src={movie.poster_path} />
+        </LazyLoad>
+      </CardContent>
+      <CardFooter>
+        <CardTitle>
+          <Truncate lines={3} trimWhitespace>
+            {movie.title}
+          </Truncate>
+        </CardTitle>
+      </CardFooter>
+    </Card>
   );
 };

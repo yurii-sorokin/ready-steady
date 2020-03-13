@@ -67,6 +67,7 @@ export const lightTheme: Theme = {
   ...darkTheme,
 
   colors: {
+    ...darkTheme.colors,
     primary: {
       normal: colors.white,
       minor: colors.white2
@@ -86,9 +87,6 @@ export const lightTheme: Theme = {
       secondary: colors.white,
       inverted: colors.white,
       disabled: colors.grey2
-    },
-    status: {
-      danger: colors.red
     }
   }
 };

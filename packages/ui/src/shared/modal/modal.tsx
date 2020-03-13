@@ -1,6 +1,6 @@
 import useKey from '@rooks/use-key';
 import transparentize from 'polished/lib/color/transparentize';
-import React, { FC, MouseEvent, useCallback, useRef } from 'react';
+import React, { FC, MouseEvent, useCallback, useRef, memo } from 'react';
 import { down, up } from 'styled-breakpoints';
 import styled from 'styled-components';
 import { box, Size, system, SystemProps, theme } from '../../design-system';
@@ -56,7 +56,7 @@ export interface ModalProps extends SystemProps {
   onClose: () => void;
 }
 
-export const Modal: FC<ModalProps> = ({ children, onClose, ...props }) => {
+export const Modal: FC<ModalProps> = memo(({ children, onClose, ...props }) => {
   const modalRef = useRef<any>(null);
   const onClick = useCallback(
     (e: MouseEvent<any>) => {
@@ -75,4 +75,4 @@ export const Modal: FC<ModalProps> = ({ children, onClose, ...props }) => {
       </ModalDialog>
     </ModalOverlay>
   );
-};
+});

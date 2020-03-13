@@ -1,5 +1,5 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import React, { FC, useLayoutEffect, useRef } from 'react';
+import React, { FC, useLayoutEffect, useRef, memo } from 'react';
 import { Movie } from '../../../api/tmdb/types';
 import {
   CardDetails,
@@ -23,61 +23,62 @@ export interface MovieDetailsProps {
   onClick?: () => void;
 }
 
-export const MovieDetails: FC<MovieDetailsProps> = ({
-  movie,
-  subscription,
-  onClick
-}) => {
-  const { data: movieDetails, loading } = useMovieDetails(movie.id);
-  const cardRef = useRef<HTMLElement>();
+export const MovieDetails: FC<MovieDetailsProps> = memo(
+  ({ movie, subscription, onClick }) => {
+    const { data: movieDetails, loading } = useMovieDetails(movie.id);
+    const cardRef = useRef<HTMLElement>();
 
-  useLayoutEffect(() => {
-    const node = cardRef.current;
-    node && disableBodyScroll(node);
-    return () => node && enableBodyScroll(node);
-  });
+    useLayoutEffect(() => {
+      const node = cardRef.current;
+      node && disableBodyScroll(node);
+      return () => node && enableBodyScroll(node);
+    });
 
-  return (
-    <CardDetails ref={cardRef as never}>
-      {loading ? (
-        <SpinnerCenter>
-          <Spinner />
-        </SpinnerCenter>
-      ) : (
-        movieDetails && (
-          <>
-            <SubscriptionIcon
-              on={!!subscription}
-              type="movie"
-              id={movie.id}
-              title={movie.title}
-              date={movie.release_date}
-            />
-            <CardDetailsPoster>
-              {movieDetails.videos.results[0] ? (
-                <YouTube id={movieDetails.videos.results[0].key} width="100%" />
-              ) : (
-                <Img
-                  onClick={onClick}
-                  alt={movieDetails.title}
-                  src={movieDetails.backdrop_path}
-                  fallbackSrc={movieDetails.poster_path}
-                />
-              )}
-            </CardDetailsPoster>
-            <CardDetailsFooter onClick={onClick}>
-              <FlagList countries={movieDetails.production_countries} />
-              <TagList>
-                {movieDetails.genres.map(({ name }) => (
-                  <Tag key={name}>{name}</Tag>
-                ))}
-              </TagList>
-              <Title>{movieDetails.title}</Title>
-              <Description>{movieDetails.overview}</Description>
-            </CardDetailsFooter>
-          </>
-        )
-      )}
-    </CardDetails>
-  );
-};
+    return (
+      <CardDetails ref={cardRef as never}>
+        {loading ? (
+          <SpinnerCenter>
+            <Spinner />
+          </SpinnerCenter>
+        ) : (
+          movieDetails && (
+            <>
+              <SubscriptionIcon
+                on={!!subscription}
+                type="movie"
+                id={movie.id}
+                title={movie.title}
+                date={movie.release_date}
+              />
+              <CardDetailsPoster>
+                {movieDetails.videos.results[0] ? (
+                  <YouTube
+                    id={movieDetails.videos.results[0].key}
+                    width="100%"
+                  />
+                ) : (
+                  <Img
+                    onClick={onClick}
+                    alt={movieDetails.title}
+                    src={movieDetails.backdrop_path}
+                    fallbackSrc={movieDetails.poster_path}
+                  />
+                )}
+              </CardDetailsPoster>
+              <CardDetailsFooter onClick={onClick}>
+                <FlagList countries={movieDetails.production_countries} />
+                <TagList>
+                  {movieDetails.genres.map(({ name }) => (
+                    <Tag key={name}>{name}</Tag>
+                  ))}
+                </TagList>
+                <Title>{movieDetails.title}</Title>
+                <Description>{movieDetails.overview}</Description>
+              </CardDetailsFooter>
+            </>
+          )
+        )}
+      </CardDetails>
+    );
+  }
+);

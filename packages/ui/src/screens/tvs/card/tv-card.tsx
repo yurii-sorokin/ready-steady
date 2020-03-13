@@ -20,12 +20,14 @@ import { createPortal } from 'react-dom';
 interface TvCardProps {
   tv: TvShow;
   maxPopularity: number;
+  index: number;
   subscription?: Subscription;
 }
 
 export const TvCard: FC<TvCardProps> = ({
   tv,
   maxPopularity,
+  index,
   subscription
 }) => {
   const rate = tv.popularity / maxPopularity;
@@ -54,29 +56,27 @@ export const TvCard: FC<TvCardProps> = ({
   );
 
   return (
-    <>
-      <Card size={size} onClick={onCardClick}>
-        <SubscriptionIcon
-          on={!!subscription}
-          type="tv"
-          id={tv.id}
-          title={tv.name}
-          date={tv.first_air_date}
-          ref={bellRef as any}
-        />
-        <CardContent>
-          <LazyLoad>
-            <CardPoster alt={tv.name} src={tv.poster_path} />
-          </LazyLoad>
-        </CardContent>
-        <CardFooter>
-          <CardTitle>
-            <Truncate lines={3} trimWhitespace>
-              {tv.name}
-            </Truncate>
-          </CardTitle>
-        </CardFooter>
-      </Card>
-    </>
+    <Card index={index} size={size} onClick={onCardClick}>
+      <SubscriptionIcon
+        on={!!subscription}
+        type="tv"
+        id={tv.id}
+        title={tv.name}
+        date={tv.first_air_date}
+        ref={bellRef as any}
+      />
+      <CardContent>
+        <LazyLoad>
+          <CardPoster alt={tv.name} src={tv.poster_path} />
+        </LazyLoad>
+      </CardContent>
+      <CardFooter>
+        <CardTitle>
+          <Truncate lines={3} trimWhitespace>
+            {tv.name}
+          </Truncate>
+        </CardTitle>
+      </CardFooter>
+    </Card>
   );
 };

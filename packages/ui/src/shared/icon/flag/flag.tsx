@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, memo } from 'react';
 import styled, { css } from 'styled-components';
 
 const Icon = styled.div<{ src: string }>`
@@ -16,17 +16,19 @@ const Icon = styled.div<{ src: string }>`
   height: 12px;
 `;
 
-export const FlagIconUnstyled: FC<{ code: string }> = ({ code, ...props }) => {
-  const [url, setUrl] = useState<string>('');
+export const FlagIconUnstyled: FC<{ code: string }> = memo(
+  ({ code, ...props }) => {
+    const [url, setUrl] = useState<string>('');
 
-  useEffect(() => {
-    import(`flag-icon-css/flags/4x3/${code}.svg`)
-      .then(m => setUrl(m.default))
-      .catch(console.error);
-  }, [code]);
+    useEffect(() => {
+      import(`flag-icon-css/flags/4x3/${code}.svg`)
+        .then(m => setUrl(m.default))
+        .catch(console.error);
+    }, [code]);
 
-  return <Icon src={url} {...props}></Icon>;
-};
+    return <Icon src={url} {...props}></Icon>;
+  }
+);
 
 export const FlagIcon = styled(FlagIconUnstyled)`
   display: inline-block;

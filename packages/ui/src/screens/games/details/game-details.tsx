@@ -1,6 +1,6 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import Markdown from 'markdown-to-jsx';
-import React, { FC, useLayoutEffect, useRef } from 'react';
+import React, { FC, useLayoutEffect, useRef, memo } from 'react';
 import { Game } from '../../../api/rawg/types';
 import { Subscription } from '../../../firebase/store';
 import {
@@ -23,76 +23,74 @@ export interface GameDetailsProps {
   onClick?: () => void;
 }
 
-export const GameDetails: FC<GameDetailsProps> = ({
-  game,
-  subscription,
-  onClick
-}) => {
-  const { data: gameDetails, loading } = useGameDetails(game.id);
-  const cardRef = useRef<HTMLElement>();
+export const GameDetails: FC<GameDetailsProps> = memo(
+  ({ game, subscription, onClick }) => {
+    const { data: gameDetails, loading } = useGameDetails(game.id);
+    const cardRef = useRef<HTMLElement>();
 
-  useLayoutEffect(() => {
-    const node = cardRef.current;
-    node && disableBodyScroll(node);
-    return () => node && enableBodyScroll(node);
-  });
+    useLayoutEffect(() => {
+      const node = cardRef.current;
+      node && disableBodyScroll(node);
+      return () => node && enableBodyScroll(node);
+    });
 
-  return (
-    <CardDetails ref={cardRef as never}>
-      {loading ? (
-        <SpinnerCenter>
-          <Spinner />
-        </SpinnerCenter>
-      ) : (
-        gameDetails && (
-          <>
-            <SubscriptionIcon
-              on={!!subscription}
-              type="game"
-              id={game.id}
-              title={game.name}
-              date={game.released}
-            />
-            <CardDetailsPoster>
-              {gameDetails.clip && gameDetails.clip.clips['640'] ? (
-                <video controls loop muted width="100%">
-                  <source
-                    src={gameDetails.clip.clips['640']}
-                    type="video/mp4"
-                  />
+    return (
+      <CardDetails ref={cardRef as never}>
+        {loading ? (
+          <SpinnerCenter>
+            <Spinner />
+          </SpinnerCenter>
+        ) : (
+          gameDetails && (
+            <>
+              <SubscriptionIcon
+                on={!!subscription}
+                type="game"
+                id={game.id}
+                title={game.name}
+                date={game.released}
+              />
+              <CardDetailsPoster>
+                {gameDetails.clip && gameDetails.clip.clips['640'] ? (
+                  <video controls loop muted width="100%">
+                    <source
+                      src={gameDetails.clip.clips['640']}
+                      type="video/mp4"
+                    />
+                    <Img
+                      onClick={onClick}
+                      alt={gameDetails.name}
+                      src={gameDetails.background_image}
+                    />
+                  </video>
+                ) : (
                   <Img
                     onClick={onClick}
                     alt={gameDetails.name}
                     src={gameDetails.background_image}
                   />
-                </video>
-              ) : (
-                <Img
-                  onClick={onClick}
-                  alt={gameDetails.name}
-                  src={gameDetails.background_image}
-                />
-              )}
-            </CardDetailsPoster>
-            <CardDetailsFooter onClick={onClick}>
-              <PlatformList platforms={gameDetails.platforms} />
-              <Title>{gameDetails.name}</Title>
-              <TagList>
-                {gameDetails.genres.map(({ name }) => (
-                  <Tag key={name}>{name}</Tag>
-                ))}
-              </TagList>
-              <Description>
-                <Markdown>
-                  {(gameDetails.description_raw || '')
-                    .replace(/(\n+)?(●|\*)((\n|\s)+)?/g, '\n\n* ')
-                    .replace(/\n+/g, '\n\n')}
-                </Markdown>
-              </Description>
-            </CardDetailsFooter>
-          </>
-        )
-      )}
-    </CardDetails>
-  );
-};
+                )}
+              </CardDetailsPoster>
+              <CardDetailsFooter onClick={onClick}>
+                <PlatformList platforms={gameDetails.platforms} />
+                <Title>{gameDetails.name}</Title>
+                <TagList>
+                  {gameDetails.genres.map(({ name }) => (
+                    <Tag key={name}>{name}</Tag>
+                  ))}
+                </TagList>
+                <Description>
+                  <Markdown>
+                    {(gameDetails.description_raw || '')
+                      .replace(/(\n+)?(●|\*)((\n|\s)+)?/g, '\n\n* ')
+                      .replace(/\n+/g, '\n\n')}
+                  </Markdown>
+                </Description>
+              </CardDetailsFooter>
+            </>
+          )
+        )}
+      </CardDetails>
+    );
+  }
+);

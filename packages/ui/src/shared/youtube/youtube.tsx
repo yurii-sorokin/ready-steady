@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { box } from '../../design-system';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 
 export const YouTubeWrapper = styled.div`
   ${box}
@@ -26,12 +26,14 @@ export const YouTubeFrame = styled.iframe.attrs({
 const videoUrl = (id: string) =>
   `https://www.youtube.com/embed/${id}?autoplay=0&mute=1`;
 
-export const YouTube: FC<{ id: string; width?: string; height?: string }> = ({
-  id,
-  width,
-  height
-}) => (
+export interface YouTubeProps {
+  id: string;
+  width?: string;
+  height?: string;
+}
+
+export const YouTube: FC<YouTubeProps> = memo(({ id, width, height }) => (
   <YouTubeWrapper>
     <YouTubeFrame {...{ src: videoUrl(id), width, height }} />
   </YouTubeWrapper>
-);
+));

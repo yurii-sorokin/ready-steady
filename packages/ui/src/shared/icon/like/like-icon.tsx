@@ -1,7 +1,7 @@
 import { faHeart as faHeartOff } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faHeartOn } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, memo } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../../design-system';
 
@@ -10,12 +10,12 @@ export interface LikeIconProps {
   onClick: () => void;
 }
 
-export const LikeIconUnstyled = forwardRef(
-  ({ on, onClick, ...props }: LikeIconProps, ref: any) => (
+export const LikeIconUnstyled = memo(
+  forwardRef(({ on, onClick, ...props }: LikeIconProps, ref: any) => (
     <span onClick={onClick} ref={ref}>
       <FontAwesomeIcon {...props} icon={on ? faHeartOn : faHeartOff} />
     </span>
-  )
+  ))
 );
 
 export const LikeIcon = styled(LikeIconUnstyled)`

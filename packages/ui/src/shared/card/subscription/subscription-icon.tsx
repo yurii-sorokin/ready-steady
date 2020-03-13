@@ -1,5 +1,5 @@
 import format from 'date-fns/format';
-import React, { forwardRef, useCallback } from 'react';
+import React, { forwardRef, useCallback, memo } from 'react';
 import { useModal } from 'react-modal-hook';
 import { up } from 'styled-breakpoints';
 import styled, { css } from 'styled-components';
@@ -27,56 +27,58 @@ export interface SubscriptionBellProps {
 
 const now = format(new Date(), 'yyyy-MM-dd');
 
-const SubscriptionIconUnstyled = forwardRef(
-  ({ on, id, type, date, title, ...props }: SubscriptionBellProps, ref) => {
-    const { enabled: signIn, setOn, setOff } = useToggle(true);
+const SubscriptionIconUnstyled = memo(
+  forwardRef(
+    ({ on, id, type, date, title, ...props }: SubscriptionBellProps, ref) => {
+      const { enabled: signIn, setOn, setOff } = useToggle(true);
 
-    const addSubscription = useAddSubscription({
-      id,
-      type,
-      date,
-      title
-    });
-    const removeSubscription = useRemoveSubscription({
-      id,
-      type
-    });
+      const addSubscription = useAddSubscription({
+        id,
+        type,
+        date,
+        title
+      });
+      const removeSubscription = useRemoveSubscription({
+        id,
+        type
+      });
 
-    const toggleSubscription = useCallback(
-      () => (on ? removeSubscription() : addSubscription()),
-      [addSubscription, on, removeSubscription]
-    );
+      const toggleSubscription = useCallback(
+        () => (on ? removeSubscription() : addSubscription()),
+        [addSubscription, on, removeSubscription]
+      );
 
-    const user = useCurrentUser();
-    const [showModal, hideModal] = useModal(
-      () => (
-        <Modal onClose={hideModal} height="auto">
-          {signIn ? (
-            <SignIn onSuccess={hideModal} onSignUpClick={setOff} />
-          ) : (
-            <SignUp onSuccess={hideModal} onSignInClick={setOn} />
-          )}
-        </Modal>
-      ),
-      [signIn]
-    );
+      const user = useCurrentUser();
+      const [showModal, hideModal] = useModal(
+        () => (
+          <Modal onClose={hideModal} height="auto">
+            {signIn ? (
+              <SignIn onSuccess={hideModal} onSignUpClick={setOff} />
+            ) : (
+              <SignUp onSuccess={hideModal} onSignInClick={setOn} />
+            )}
+          </Modal>
+        ),
+        [signIn]
+      );
 
-    const onToggleSubscription = useCallback(() => {
-      if (!user) {
-        showModal();
-      }
+      const onToggleSubscription = useCallback(() => {
+        if (!user) {
+          showModal();
+        }
 
-      requestPermission()
-        .then(toggleSubscription)
-        .catch(toggleSubscription);
-    }, [showModal, toggleSubscription, user]);
+        requestPermission()
+          .then(toggleSubscription)
+          .catch(toggleSubscription);
+      }, [showModal, toggleSubscription, user]);
 
-    return date > now ? (
-      <BellIcon {...props} on={on} onClick={onToggleSubscription} ref={ref} />
-    ) : (
-      <LikeIcon {...props} on={on} onClick={onToggleSubscription} ref={ref} />
-    );
-  }
+      return date > now ? (
+        <BellIcon {...props} on={on} onClick={onToggleSubscription} ref={ref} />
+      ) : (
+        <LikeIcon {...props} on={on} onClick={onToggleSubscription} ref={ref} />
+      );
+    }
+  )
 );
 
 export const SubscriptionIcon = styled(SubscriptionIconUnstyled)`

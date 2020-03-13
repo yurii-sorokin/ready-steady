@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, useCallback, useRef } from 'react';
+import React, { FC, MouseEvent, useCallback, useRef, memo } from 'react';
 import LazyLoad from 'react-lazyload';
 import { useModal } from 'react-modal-hook';
 import Truncate from 'react-truncate';
@@ -22,45 +22,42 @@ interface GameCardProps {
   game: Game;
   maxAdded: number;
   subscription?: Subscription;
+  index: number;
 }
 
-export const GameCard: FC<GameCardProps> = ({
-  game,
-  maxAdded,
-  subscription
-}) => {
-  const rate = game.added / maxAdded;
-  const size = rate >= 0.7 ? Size.md : rate < 0.05 ? Size.xs : Size.sm;
+export const GameCard: FC<GameCardProps> = memo(
+  ({ game, maxAdded, subscription, index }) => {
+    const rate = game.added / maxAdded;
+    const size = rate >= 0.7 ? Size.md : rate < 0.05 ? Size.xs : Size.sm;
 
-  const [showModal, hideModal] = useModal(
-    () =>
-      createPortal(
-        <Modal onClose={hideModal}>
-          <GameDetails
-            onClick={hideModal}
-            game={game}
-            subscription={subscription}
-          />
-        </Modal>,
-        document.body
-      ),
-    [game, subscription]
-  );
+    const [showModal, hideModal] = useModal(
+      () =>
+        createPortal(
+          <Modal onClose={hideModal}>
+            <GameDetails
+              onClick={hideModal}
+              game={game}
+              subscription={subscription}
+            />
+          </Modal>,
+          document.body
+        ),
+      [game, subscription]
+    );
 
-  const bellRef = useRef<HTMLElement>(null);
+    const bellRef = useRef<HTMLElement>(null);
 
-  const onCardClick = useCallback(
-    (e: MouseEvent) => {
-      if (!bellRef.current || !bellRef.current.contains(e.target as any)) {
-        showModal();
-      }
-    },
-    [showModal]
-  );
+    const onCardClick = useCallback(
+      (e: MouseEvent) => {
+        if (!bellRef.current || !bellRef.current.contains(e.target as any)) {
+          showModal();
+        }
+      },
+      [showModal]
+    );
 
-  return (
-    <>
-      <Card size={size} onClick={onCardClick}>
+    return (
+      <Card index={index} size={size} onClick={onCardClick}>
         <CardContent>
           <SubscriptionIcon
             on={!!subscription}
@@ -81,7 +78,7 @@ export const GameCard: FC<GameCardProps> = ({
           </LazyLoad>
         </CardContent>
         <CardFooter>
-          {size !== Size.xs && <PlatformList platforms={game.platforms} />}
+          <PlatformList platforms={game.platforms} />
           <CardTitle>
             <Truncate lines={3} trimWhitespace>
               {game.name}
@@ -89,6 +86,6 @@ export const GameCard: FC<GameCardProps> = ({
           </CardTitle>
         </CardFooter>
       </Card>
-    </>
-  );
-};
+    );
+  }
+);

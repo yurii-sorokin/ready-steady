@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 import { messaging } from '../firebase';
 import { addToken } from '../firebase/store';
 import { useCurrentUser } from '../hooks/use-current-user';
@@ -27,7 +27,7 @@ const updateToken = (user: firebase.User | null) => {
   );
 };
 
-export const Notifications = () => {
+export const Notifications = memo(() => {
   const user = useCurrentUser();
 
   useEffect(() => {
@@ -36,4 +36,4 @@ export const Notifications = () => {
   }, [user]);
 
   return null;
-};
+});
