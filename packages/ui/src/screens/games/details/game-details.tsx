@@ -1,6 +1,6 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import Markdown from 'markdown-to-jsx';
-import React, { FC, useLayoutEffect, useRef, memo } from 'react';
+import React, { FC, memo, useLayoutEffect, useRef, MouseEvent } from 'react';
 import { Game } from '../../../api/rawg/types';
 import { Subscription } from '../../../firebase/store';
 import {
@@ -16,17 +16,20 @@ import { Spinner, SpinnerCenter } from '../../../shared/spinner';
 import { Tag, TagList } from '../../../shared/tag-list';
 import { PlatformList } from '../platform-list';
 import { useGameDetails } from '../use-games';
+import { useIgnoreClick } from '../../../hooks/use-ignore-click';
 
 export interface GameDetailsProps {
   game: Game;
   subscription?: Subscription;
-  onClick?: () => void;
+  onClick?: (event?: MouseEvent<any>) => void;
 }
 
 export const GameDetails: FC<GameDetailsProps> = memo(
   ({ game, subscription, onClick }) => {
     const { data: gameDetails, loading } = useGameDetails(game.id);
     const cardRef = useRef<HTMLElement>();
+    const iconRef = useRef<HTMLElement>();
+    const onCardClick = useIgnoreClick(onClick, [iconRef]);
 
     useLayoutEffect(() => {
       const node = cardRef.current;
@@ -43,13 +46,6 @@ export const GameDetails: FC<GameDetailsProps> = memo(
         ) : (
           gameDetails && (
             <>
-              <SubscriptionIcon
-                on={!!subscription}
-                type="game"
-                id={game.id}
-                title={game.name}
-                date={game.released}
-              />
               <CardDetailsPoster>
                 {gameDetails.clip && gameDetails.clip.clips['640'] ? (
                   <video controls loop muted width="100%">
@@ -58,20 +54,28 @@ export const GameDetails: FC<GameDetailsProps> = memo(
                       type="video/mp4"
                     />
                     <Img
-                      onClick={onClick}
+                      onClick={onCardClick}
                       alt={gameDetails.name}
                       src={gameDetails.background_image}
                     />
                   </video>
                 ) : (
                   <Img
-                    onClick={onClick}
+                    onClick={onCardClick}
                     alt={gameDetails.name}
                     src={gameDetails.background_image}
                   />
                 )}
               </CardDetailsPoster>
-              <CardDetailsFooter onClick={onClick}>
+              <CardDetailsFooter onClick={onCardClick}>
+                <SubscriptionIcon
+                  ref={iconRef}
+                  on={!!subscription}
+                  type="game"
+                  id={game.id}
+                  title={game.name}
+                  date={game.released}
+                />
                 <PlatformList platforms={gameDetails.platforms} />
                 <Title>{gameDetails.name}</Title>
                 <TagList>

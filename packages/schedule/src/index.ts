@@ -28,7 +28,7 @@ const createMessage = (token: string, type: string) => (
   ...payload(type, item.data().title)
 });
 
-type Query = [string, FirebaseFirestore.WhereFilterOp, any];
+type Query = [string, FirebaseFirestore.WhereFilterOp, unknown];
 
 const createQueryFrom = (date: Date): Query => [
   'date',

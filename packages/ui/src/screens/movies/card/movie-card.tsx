@@ -1,10 +1,12 @@
-import React, { FC, MouseEvent, useCallback, useRef } from 'react';
+import React, { FC, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import LazyLoad from 'react-lazyload';
 import { useModal } from 'react-modal-hook';
 import Truncate from 'react-truncate';
 import { Movie } from '../../../api/tmdb/types';
 import { Size } from '../../../design-system';
 import { Subscription } from '../../../firebase/store';
+import { useIgnoreClick } from '../../../hooks/use-ignore-click';
 import {
   Card,
   CardContent,
@@ -15,7 +17,6 @@ import {
 import { SubscriptionIcon } from '../../../shared/card/subscription';
 import { Modal } from '../../../shared/modal';
 import { MovieDetails } from '../details';
-import { createPortal } from 'react-dom';
 
 interface MovieCardProps {
   movie: Movie;
@@ -32,6 +33,7 @@ export const MovieCard: FC<MovieCardProps> = ({
 }) => {
   const rate = movie.popularity / maxPopularity;
   const size = rate >= 0.05 ? Size.sm : Size.xs;
+  const bellRef = useRef<HTMLElement>(null);
 
   const [showModal, hideModal] = useModal(
     () =>
@@ -48,16 +50,7 @@ export const MovieCard: FC<MovieCardProps> = ({
     [movie, subscription]
   );
 
-  const bellRef = useRef<HTMLElement>(null);
-
-  const onCardClick = useCallback(
-    (e: MouseEvent) => {
-      if (!bellRef.current || !bellRef.current.contains(e.target as any)) {
-        showModal();
-      }
-    },
-    [showModal]
-  );
+  const onCardClick = useIgnoreClick(showModal, [bellRef]);
 
   return (
     <Card index={index} size={size} onClick={onCardClick}>

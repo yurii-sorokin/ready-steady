@@ -1,10 +1,12 @@
-import React, { FC, MouseEvent, useCallback, useRef, memo } from 'react';
+import React, { FC, memo, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import LazyLoad from 'react-lazyload';
 import { useModal } from 'react-modal-hook';
 import Truncate from 'react-truncate';
 import { Game } from '../../../api/rawg/types';
 import { Size } from '../../../design-system';
 import { Subscription } from '../../../firebase/store';
+import { useIgnoreClick } from '../../../hooks/use-ignore-click';
 import {
   Card,
   CardContent,
@@ -16,7 +18,6 @@ import { SubscriptionIcon } from '../../../shared/card/subscription';
 import { Modal } from '../../../shared/modal';
 import { GameDetails } from '../details';
 import { PlatformList } from '../platform-list';
-import { createPortal } from 'react-dom';
 
 interface GameCardProps {
   game: Game;
@@ -29,6 +30,7 @@ export const GameCard: FC<GameCardProps> = memo(
   ({ game, maxAdded, subscription, index }) => {
     const rate = game.added / maxAdded;
     const size = rate >= 0.7 ? Size.md : rate < 0.05 ? Size.xs : Size.sm;
+    const bellRef = useRef<HTMLElement>(null);
 
     const [showModal, hideModal] = useModal(
       () =>
@@ -45,16 +47,7 @@ export const GameCard: FC<GameCardProps> = memo(
       [game, subscription]
     );
 
-    const bellRef = useRef<HTMLElement>(null);
-
-    const onCardClick = useCallback(
-      (e: MouseEvent) => {
-        if (!bellRef.current || !bellRef.current.contains(e.target as any)) {
-          showModal();
-        }
-      },
-      [showModal]
-    );
+    const onCardClick = useIgnoreClick(showModal, [bellRef]);
 
     return (
       <Card index={index} size={size} onClick={onCardClick}>

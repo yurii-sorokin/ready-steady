@@ -11,6 +11,7 @@ export const ModalDialog = styled.div<SystemProps>`
   bottom: 0;
   width: 100%;
   height: 70vh;
+  overflow-y: auto;
   padding-left: ${theme(t => t.space[1])};
   padding-right: ${theme(t => t.space[1])};
   z-index: 100;

@@ -6,8 +6,9 @@ import { TagList } from '../../tag-list';
 import { Description } from './description';
 import { IconList } from './icon-list';
 import { Title } from './title';
+import { Box } from '../../box';
 
-export const CardDetails = styled.div`
+export const CardDetails = styled(Box)`
   ${box}
   position: relative;
   display: flex;
@@ -37,7 +38,7 @@ export const CardDetails = styled.div`
   }
 `;
 
-export const CardDetailsPoster = styled.div`
+export const CardDetailsPoster = styled(Box)`
   ${box}
   width: 100%;
 
@@ -51,8 +52,9 @@ export const CardDetailsPoster = styled.div`
   }
 `;
 
-export const CardDetailsFooter = styled.div`
+export const CardDetailsFooter = styled(Box)`
   ${box}
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
