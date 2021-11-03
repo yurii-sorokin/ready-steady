@@ -52,7 +52,7 @@
     "simple-icons": "2.5.0",
     "styled-breakpoints": "7.2.0",
     "styled-components": "5.0.0",
-    "validator": "12.2.0"
+    "validator": "13.7.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "4.2.4",
